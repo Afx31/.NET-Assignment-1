@@ -10,6 +10,8 @@ namespace calc
     {
         static void Main(string[] args)
         {
+            //testing out git 
+
             //Initalise values for dividing up the equation
             string[] leftOperators = new string[args.Length];
             string[] leftOperants = new string[args.Length];
