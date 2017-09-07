@@ -9,9 +9,7 @@ namespace calc
     class Program
     {
         static void Main(string[] args)
-        {
-            //testing out git 
-
+        {         
             //Initalise values for dividing up the equation
             string[] leftOperators = new string[args.Length];
             string[] leftOperants = new string[args.Length];
@@ -99,23 +97,10 @@ namespace calc
                     }
                 }
             }
-
+            equationCalculations(leftOperants, rightOperants);      //check which side of '=' contains 'X'
             
-            //Convert values in leftOpterators from string to int for calculation.
-            int leftOperators_Result = 0;
-            for (int i = 0; i < leftOperators.Length; i++)
-            {
-                leftOperators_Result += Convert.ToInt32(leftOperants[i]);
-            }
-            // -=
-            // *=
-            // /=
-            //put it all througth a if or case statement dependig on the operator?
 
-
-
-
-            //Test data
+            #region TEST DATA
             Console.WriteLine("Left Operators:");
             checkArray(leftOperators);
             Console.WriteLine("Left Operants:");
@@ -126,7 +111,30 @@ namespace calc
             checkArray(rightOperants);
             Console.WriteLine("Equals:");
             checkArray(equalsSign);
+            #endregion
         }
+        static void equationCalculations(string[] leftArray, string[] rightArray)
+        {
+            int i = 0;
+            try
+            {
+                if (leftArray[i] == "X")
+                {
+                    Console.WriteLine("left array has X");
+                }
+                else if (rightArray[i] == "X")
+                {
+                    Console.WriteLine("right array has X");
+                }
+            }
+            catch
+            {
+                Exception ex;
+            }
+        }
+
+
+
         static void checkArray(string[] array)
         {
             for (int i = 0; i < array.Length; i++)
@@ -159,12 +167,12 @@ namespace calc
         static Boolean operantsConfirmation(string value)
         {
             int result;
-            Boolean numberCheck = int.TryParse(value, out result);
-            if(value == "X")
+            Boolean valueCheck = false;
+            if (value == "X" || int.TryParse(value, out result))
             {
-                numberCheck = true;
+                valueCheck = true;
             }
-            return numberCheck;
-        }     
+            return valueCheck;
+        } 
     }
 }
