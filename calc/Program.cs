@@ -97,7 +97,7 @@ namespace calc
                     }
                 }
             }
-            equationCalculations(leftOperants, rightOperants);      //check which side of '=' contains 'X'
+            equationCalculations(/*leftOperators, leftOperants,*/ rightOperators, rightOperants);      //check which side of '=' contains 'X'
             
 
             #region TEST DATA
@@ -113,26 +113,43 @@ namespace calc
             checkArray(equalsSign);
             #endregion
         }
-        static void equationCalculations(string[] leftArray, string[] rightArray)
-        {
-            int i = 0;
-            try
+        static void equationCalculations(/*string[] leftOperators, string[] leftOperants,*/ string[] rightOperators, string[] rightOperants)
+        {       //taking equations with X on left of = sign, by itself
+            //EG (test data): "X = 5 + 22 * 3
+            for (int i = 0; i < rightOperators.Length; i++)
             {
-                if (leftArray[i] == "X")
+                if (rightOperators[i] == "*")
                 {
-                    Console.WriteLine("left array has X");
+                    int rightOperants_Result = 0;
+                    for (int j = 0; j < rightOperators.Length; j++)
+                    {
+                        rightOperants_Result -= Convert.ToInt32(rightOperators[j]);
+                    }
+                    for (int j = 0; j < rightOperators.Length; j++)
+                    {
+                        rightOperants_Result -= Convert.ToInt32(rightOperants[j]);
+                    }
+
                 }
-                else if (rightArray[i] == "X")
+                else if (rightOperators[i] == "-")
                 {
-                    Console.WriteLine("right array has X");
+
                 }
-            }
-            catch
-            {
-                Exception ex;
+                else if (rightOperators[i] == "+")
+                {
+
+                }
+                else if (rightOperators[i] == "/")
+                {
+
+                }
             }
         }
 
+        static void leftOperantCalc(string[] array)
+        {
+
+        }
 
 
         static void checkArray(string[] array)
