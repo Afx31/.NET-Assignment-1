@@ -3,26 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;       //Regex Library
 
 namespace calc
 {
     class Program
     {
         static void Main(string[] args)
-        {         
-            //Initalise values for dividing up the equation
+        {
+            string[] leftEquation = new string[args.Length];
             string[] leftOperators = new string[args.Length];
-            string[] leftOperants = new string[args.Length];
+            string[] rightEquation = new string[args.Length];
             string[] rightOperators = new string[args.Length];
-            string[] rightOperants = new string[args.Length];
             string[] equalsSign = new string[args.Length];
             Boolean checkEquals = false;
 
+            #region ARGS INPUT SEPERATION
             for (int i = 0; i < args.Length; i++)
             {
                 if (args[i] == "=")     //check for =
                 {
-                   checkEquals = true;
+                    checkEquals = true;
                 }
                 if (checkEquals == false)       //LEFT SIDE
                 {
@@ -32,10 +33,11 @@ namespace calc
                         int input = 0;
                         while (completed == false)
                         {
-                            if (leftOperators[input] == null)
+                            if (leftEquation[input] == null)
                             {
+                                leftEquation[input] = args[i];
                                 leftOperators[input] = args[i];
-                                completed = true;                                
+                                completed = true;
                             }
                             input++;
                         }
@@ -46,30 +48,31 @@ namespace calc
                         int input = 0;
                         while (completed == false)
                         {
-                            if (leftOperants[input] == null)
+                            if (leftEquation[input] == null)
                             {
-                                leftOperants[input] = args[i];
+                                leftEquation[input] = args[i];
                                 completed = true;
                             }
                             input++;
                         }
                     }
                 }
-                else if (checkEquals == true)       //RIGHT SIDE
+                if (checkEquals == true)       //RIGHT SIDE
                 {
-                    if (args[i] == "=")     //store the = sign in variable
+                    if (args[i] == "=")
                     {
                         int input = 0;
                         equalsSign[input] = args[i];
                     }
-                    if (operatorConfirmation(args[i]) == true)     //+-*/%^2
+                    if (operatorConfirmation(args[i]) == true)      //+-*/%^2
                     {
                         Boolean completed = false;
                         int input = 0;
                         while (completed == false)
                         {
-                            if (rightOperators[input] == null)
+                            if (rightEquation[input] == null)
                             {
+                                rightEquation[input] = args[i];
                                 rightOperators[input] = args[i];
                                 completed = true;
                             }
@@ -82,9 +85,9 @@ namespace calc
                         int input = 0;
                         while (completed == false)
                         {
-                            if (rightOperants[input] == null)
+                            if (rightEquation[input] == null)
                             {
-                                rightOperants[input] = args[i];
+                                rightEquation[input] = args[i];
                                 completed = true;
                             }
                             input++;
@@ -92,49 +95,55 @@ namespace calc
                     }
                 }
             }
-            equationCalculations(/*leftOperators, leftOperants,*/ rightOperators, rightOperants);      //check which side of '=' contains 'X'         
-            #region TEST DATA
-            Console.WriteLine("Left Operators:");
-            checkArray(leftOperators);
-            Console.WriteLine("Left Operants:");
-            checkArray(leftOperants);
-            Console.WriteLine("Right Operators:");
-            checkArray(rightOperators);
-            Console.WriteLine("Right Operants:");
-            checkArray(rightOperants);
+            #endregion
+
+            rightEquationCalculations(rightEquation, rightOperators);
+
+            #region ARGS INPUT TEST DATA            
+            Console.WriteLine("Left Equation: ");
+            checkArray(leftEquation);
+            Console.WriteLine("Right Equation:");
+            checkArray(rightEquation);
             Console.WriteLine("Equals:");
             checkArray(equalsSign);
             #endregion
         }
 
-        static void equationCalculations(/*string[] leftOperators, string[] leftOperants,*/ string[] rightOperators, string[] rightOperants)
-        {   //EG (test data): "X = 5 + 22 * 3
-
-            //maybe do something to find the amount of values in the equation on right side, because number > op > number > op > number..
-            //change the first value will be a negative number eg: X = -6 + 3
-
-            int equation_Result = 0;
+        static void rightEquationCalculations(string[] rightEquation, string[] rightOperators)
+        {       //test data - X = 5 + 5 * 6            
             for (int i = 0; i < rightOperators.Length; i++)
             {
-                if (rightOperators[i] == "+")
-                {                    
-                    for (int j = 0; j < rightOperants.Length; j++)
+                //Console.WriteLine("arg ops " + i + " = " + rightOperators[i]);
+                if (rightOperators[i] == "*")
+                {
+                    for (int j = rightEquation.Length; j > 0; j--)
                     {
-                        equation_Result += Convert.ToInt32(rightOperants[j]);
+                        string tempString = string.Join("", rightEquation);
+                        Match m = Regex.Match(tempString, @"(\d+)\*(\d+)");
+                        string value1 = m.Groups[1].Value;
+                        string value2 = m.Groups[2].Value;
+                        //Console.WriteLine("a: " + value1);
+                        //Console.WriteLine("b: " + value2);
                     }
+                }
+                else if (rightOperators[i] == "+")
+                {
+                    string tempString = string.Join("", rightEquation);
+                    Match m = Regex.Match(tempString, @"(\d+)\+(\d+)");
+                    string value1 = m.Groups[1].Value;
+                    string value2 = m.Groups[2].Value;
                 }
                 else if (rightOperators[i] == "-")
                 {
-                    for (int j = 0; j < rightOperants.Length; j++)
-                    {
-                        //equation_Result += Convert.ToInt32(rightOperants[j]);
-                        //equation_Result = Convert.ToInt32(rightOperants[0]) - Convert.ToInt32(rightOperants[1]);
-                    }
+                    string tempString = string.Join("", rightEquation);
+                    Match m = Regex.Match(tempString, @"(\d+)\-(\d+)");
+                    string value1 = m.Groups[1].Value;
+                    string value2 = m.Groups[2].Value;
                 }
             }
-            Console.WriteLine("Result: X = " + equation_Result);
         }
 
+        #region ARRAY/OPERATOR/OPERANT CHECKS
         static void checkArray(string[] array)
         {
             for (int i = 0; i < array.Length; i++)
@@ -171,6 +180,7 @@ namespace calc
                 valueCheck = true;
             }
             return valueCheck;
-        } 
+        }
+        #endregion
     }
 }
