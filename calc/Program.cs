@@ -24,7 +24,7 @@ namespace calc
                 {
                    checkEquals = true;
                 }
-                if (checkEquals == false)
+                if (checkEquals == false)       //LEFT SIDE
                 {
                     if (operatorConfirmation(args[i]) == true)      //+-*/%^2
                     {
@@ -39,7 +39,6 @@ namespace calc
                             }
                             input++;
                         }
-
                     }
                     else if (operantsConfirmation(args[i]) == true)     //X & Numbers
                     {
@@ -56,7 +55,7 @@ namespace calc
                         }
                     }
                 }
-                else if (checkEquals == true)
+                else if (checkEquals == true)       //RIGHT SIDE
                 {
                     if (args[i] == "=")     //store the = sign in variable
                     {
@@ -65,8 +64,6 @@ namespace calc
                     }
                     if (operatorConfirmation(args[i]) == true)     //+-*/%^2
                     {
-                        //int input = 0;
-                        //rightOperators[input] = args[i];
                         Boolean completed = false;
                         int input = 0;
                         while (completed == false)
@@ -81,8 +78,6 @@ namespace calc
                     }
                     else if (operantsConfirmation(args[i]) == true)     //X & Numbers
                     {
-                        //int input = 0;
-                        //rightOperants[input] = args[i];
                         Boolean completed = false;
                         int input = 0;
                         while (completed == false)
@@ -97,9 +92,7 @@ namespace calc
                     }
                 }
             }
-            equationCalculations(/*leftOperators, leftOperants,*/ rightOperators, rightOperants);      //check which side of '=' contains 'X'
-            
-
+            equationCalculations(/*leftOperators, leftOperants,*/ rightOperators, rightOperants);      //check which side of '=' contains 'X'         
             #region TEST DATA
             Console.WriteLine("Left Operators:");
             checkArray(leftOperators);
@@ -113,44 +106,34 @@ namespace calc
             checkArray(equalsSign);
             #endregion
         }
+
         static void equationCalculations(/*string[] leftOperators, string[] leftOperants,*/ string[] rightOperators, string[] rightOperants)
-        {       //taking equations with X on left of = sign, by itself
-            //EG (test data): "X = 5 + 22 * 3
+        {   //EG (test data): "X = 5 + 22 * 3
+
+            //maybe do something to find the amount of values in the equation on right side, because number > op > number > op > number..
+            //change the first value will be a negative number eg: X = -6 + 3
+
+            int equation_Result = 0;
             for (int i = 0; i < rightOperators.Length; i++)
             {
-                if (rightOperators[i] == "*")
-                {
-                    int rightOperants_Result = 0;
-                    for (int j = 0; j < rightOperators.Length; j++)
+                if (rightOperators[i] == "+")
+                {                    
+                    for (int j = 0; j < rightOperants.Length; j++)
                     {
-                        rightOperants_Result -= Convert.ToInt32(rightOperators[j]);
+                        equation_Result += Convert.ToInt32(rightOperants[j]);
                     }
-                    for (int j = 0; j < rightOperators.Length; j++)
-                    {
-                        rightOperants_Result -= Convert.ToInt32(rightOperants[j]);
-                    }
-
                 }
                 else if (rightOperators[i] == "-")
                 {
-
-                }
-                else if (rightOperators[i] == "+")
-                {
-
-                }
-                else if (rightOperators[i] == "/")
-                {
-
+                    for (int j = 0; j < rightOperants.Length; j++)
+                    {
+                        //equation_Result += Convert.ToInt32(rightOperants[j]);
+                        //equation_Result = Convert.ToInt32(rightOperants[0]) - Convert.ToInt32(rightOperants[1]);
+                    }
                 }
             }
+            Console.WriteLine("Result: X = " + equation_Result);
         }
-
-        static void leftOperantCalc(string[] array)
-        {
-
-        }
-
 
         static void checkArray(string[] array)
         {
@@ -159,7 +142,6 @@ namespace calc
                 Console.WriteLine("arg " + i + " = " + array[i]);
             }
         }
-
         static Boolean operatorConfirmation(string value)
         {
             switch (value)
@@ -180,7 +162,6 @@ namespace calc
                     return false;
             }
         }
-
         static Boolean operantsConfirmation(string value)
         {
             int result;

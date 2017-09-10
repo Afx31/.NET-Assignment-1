@@ -18,3 +18,9 @@ D:\Desktop\GitHub\.NET-Assignment-1\calc\obj\Debug\calc.csprojResolveAssemblyRef
 D:\Desktop\GitHub\.NET-Assignment-1\calc\obj\Debug\calc.csproj.CoreCompileInputs.cache
 D:\Desktop\GitHub\.NET-Assignment-1\calc\obj\Debug\calc.exe
 D:\Desktop\GitHub\.NET-Assignment-1\calc\obj\Debug\calc.pdb
+C:\Users\William\Desktop\GitHub\.NET-Assignment-1\calc\bin\Debug\calc.exe.config
+C:\Users\William\Desktop\GitHub\.NET-Assignment-1\calc\bin\Debug\calc.exe
+C:\Users\William\Desktop\GitHub\.NET-Assignment-1\calc\bin\Debug\calc.pdb
+C:\Users\William\Desktop\GitHub\.NET-Assignment-1\calc\obj\Debug\calc.csprojResolveAssemblyReference.cache
+C:\Users\William\Desktop\GitHub\.NET-Assignment-1\calc\obj\Debug\calc.exe
+C:\Users\William\Desktop\GitHub\.NET-Assignment-1\calc\obj\Debug\calc.pdb
