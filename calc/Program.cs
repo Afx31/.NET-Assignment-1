@@ -106,92 +106,75 @@ namespace calc
             checkArray(leftEquation);
             Console.WriteLine("Right Equation:");
             checkArray(rightEquation);
-            Console.WriteLine("Equals:");
-            checkArray(equalsSign);
             #endregion
         }
 
         static void rightEquationCalculations(string[] rightEquation, string[] rightOperators)
-        { 
-            //Console.WriteLine("arg ops " + i + " = " + rightOperators[i]);    TEST DATA
-            //Console.WriteLine("a: " + value1);
-            //Console.WriteLine("b: " + value2);
-            //Console.WriteLine("Result = " + equationResult);
-
+        {
             int equationResult = 0;
             string tempString = string.Join("", rightEquation);
-            Match matchMultiplication = Regex.Match(tempString, @"(\d+)\*(\d+)");
+            Match matchMultiplication = Regex.Match(tempString, @"(\d+)\*(\d+)");  
             Match matchAddition = Regex.Match(tempString, @"(\d+)\+(\d+)");
             Match matchSubtraction = Regex.Match(tempString, @"(\d+)\-(\d+)");
-            string testest = matchMultiplication.Success.ToString();
+
+            string testest = matchMultiplication.ToString();
+            string[] bs = new string[] { testest };
 
             for (int i = 0; i < rightOperators.Length; i++)
             {
                 string value1;
                 string value2;
-                if (matchMultiplication.Success)
+                if (matchMultiplication.Success == true)
                 {
                     value1 = matchMultiplication.Groups[1].Value;
                     value2 = matchMultiplication.Groups[2].Value;
+                    equationResult = Convert.ToInt32(value1) * Convert.ToInt32(value2);     //carries out the multiplication, stores in equationResult
+                    string[] tempArray = new string[] { equationResult.ToString() };        //converts equationResult into an array
 
-                    equationResult = Convert.ToInt32(value1) * Convert.ToInt32(value2);
-                    //rightEquation = rightEquation.Where()        
+                    //finds the index of the current MATCH [NUMBER > OPERATOR > NUMBER]                    
+                    var indexOperator = Array.IndexOf(rightEquation, "*");
+                    var indexNum1 = indexOperator - 1;
+                    var indexNum2 = indexOperator + 1;
+
+                    //check the MATCH is correct
+                    Console.WriteLine("ceeebs: " + indexNum1);
+                    Console.WriteLine("ceeebs: " + indexOperator);
+                    Console.WriteLine("ceeebs: " + indexNum2);
+
+                    //now remove from ARRAY, after converting to LIST
+                    var tempList = rightEquation.ToList();
+                    tempList.RemoveAt(indexNum2);
+                    tempList.RemoveAt(indexOperator);
+                    tempList.RemoveAt(indexNum1);
+
+                    //convert LIST back to ARRAY
+                    string[] tempFinalArray = (string[])tempList.ToArray();
+                    
+                    for (int j = 0; j < rightEquation.Length; j++)
+                    {
+                        rightEquation[j] = null;
+                    }
+                    for (int k = 0; k < rightEquation.Length; k++)
+                    {
+                        rightEquation[k] = tempFinalArray[k];
+                    }
+
+                    foreach (var item in rightEquation)
+                    {
+                        Console.WriteLine("hopefully correct array: " + item);
+                    }
+                    break;
                 }
-                else if (matchAddition.Success)
+                else if (matchAddition.Success == true)
                 {
-                    value1 = matchAddition.Groups[1].Value;
-                    value2 = matchAddition.Groups[2].Value;
-
-                    equationResult = Convert.ToInt32(value1) + Convert.ToInt32(value2);
+                    
                 }
-                else if (matchSubtraction.Success)
+                else if (matchSubtraction.Success == true)
                 {
-                    value1 = matchSubtraction.Groups[1].Value;
-                    value2 = matchSubtraction.Groups[2].Value;
-
-                    equationResult = Convert.ToInt32(value1) - Convert.ToInt32(value2);
+                    
                 }
             }
-            Console.WriteLine("Result = " + equationResult);
-
-
-            /*
-            else if (rightOperators[i] == "/")
-            {
-                for (int j = rightEquation.Length; j > 0; j--)
-                {
-                    string tempString = string.Join("", rightEquation);
-                    Match m = Regex.Match(tempString, @"(\d+)\/(\d+)");
-                    string value1 = m.Groups[1].Value;
-                    string value2 = m.Groups[2].Value;
-
-                    equation_result = Convert.ToInt32(value1) / Convert.ToInt32(value2);
-                }
-            }
-            else if (rightOperators[i] == "+")
-            {
-                for (int j = rightEquation.Length; j > 0; j--)
-                {
-                    string tempString = string.Join("", rightEquation);
-                    Match m = Regex.Match(tempString, @"(\d+)\+(\d+)");
-                    string value1 = m.Groups[1].Value;
-                    string value2 = m.Groups[2].Value;
-
-                    equation_result = Convert.ToInt32(value1) + Convert.ToInt32(value2);
-                }
-            }
-            else if (rightOperators[i] == "-")
-            {
-                for (int j = rightEquation.Length; j > 0; j--)
-                {
-                    string tempString = string.Join("", rightEquation);
-                    Match m = Regex.Match(tempString, @"(\d+)\-(\d+)");
-                    string value1 = m.Groups[1].Value;
-                    string value2 = m.Groups[2].Value;
-
-                    equation_result = Convert.ToInt32(value1) - Convert.ToInt32(value2);
-                }
-            }*/
+             Console.WriteLine("Result = " + equationResult);
         }
 
         #region ARRAY/OPERATOR/OPERANT CHECKS
