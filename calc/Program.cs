@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Text.RegularExpressions;       //Regex Library
+using System.Text.RegularExpressions;
 
 namespace calc
 {
@@ -98,10 +98,14 @@ namespace calc
             #endregion
 
             rightEquationCalculations(rightEquation, rightOperators);
-            Console.WriteLine("new answer = ");
-            checkArray(rightEquation);
 
-            #region ARGS INPUT TEST DATA            
+            for(int o = 0; o < rightEquation.Length; o++)
+            {
+                Console.WriteLine("X = " + rightEquation[o]);
+                //break;
+            }
+
+            #region ARGS INPUT TEST DATA 
             Console.WriteLine("Left Equation: ");
             checkArray(leftEquation);
             Console.WriteLine("Right Equation:");
@@ -111,73 +115,88 @@ namespace calc
 
         static void rightEquationCalculations(string[] rightEquation, string[] rightOperators)
         {
-            int equationResult = 0;
-            string tempString = string.Join("", rightEquation);
-            Match matchMultiplication = Regex.Match(tempString, @"(\d+)\*(\d+)");  
-            Match matchAddition = Regex.Match(tempString, @"(\d+)\+(\d+)");
-            Match matchSubtraction = Regex.Match(tempString, @"(\d+)\-(\d+)");
-
-            string testest = matchMultiplication.ToString();
-            string[] bs = new string[] { testest };
-
-            for (int i = 0; i < rightOperators.Length; i++)
+            //for (int i = 0; i < rightOperators.Length; i++)
+            //if (rightEquation != null)
+            foreach (string s in rightOperators)
             {
-                string value1;
-                string value2;
+                Int64 equationResult = 0;
+                string value1, value2;
+                string tempString = string.Join("", rightEquation);
+                Match matchMultiplication = Regex.Match(tempString, @"(\d+)\*(\d+)");
+                Match matchAddition = Regex.Match(tempString, @"(\d+)\+(\d+)");
+                Match matchSubtraction = Regex.Match(tempString, @"(\d+)\-(\d+)");
+                
                 if (matchMultiplication.Success == true)
                 {
                     value1 = matchMultiplication.Groups[1].Value;
                     value2 = matchMultiplication.Groups[2].Value;
-                    equationResult = Convert.ToInt32(value1) * Convert.ToInt32(value2);     //carries out the multiplication, stores in equationResult
-                    string[] tempArray = new string[] { equationResult.ToString() };        //converts equationResult into an array
+                    equationResult = Convert.ToInt64(value1) * Convert.ToInt64(value2);
 
                     //finds the index of the current MATCH [NUMBER > OPERATOR > NUMBER]                    
-                    var indexOperator = Array.IndexOf(rightEquation, "*");
-                    var indexNum1 = indexOperator - 1;
-                    var indexNum2 = indexOperator + 1;
+                    int indexOperator = Array.IndexOf(rightEquation, "*");
+                    int indexNum1 = indexOperator - 1;
+                    int indexNum2 = indexOperator + 1;
 
-                    //check the MATCH is correct
-                    Console.WriteLine("ceeebs: " + indexNum1);
-                    Console.WriteLine("ceeebs: " + indexOperator);
-                    Console.WriteLine("ceeebs: " + indexNum2);
+                    Console.WriteLine("testing num1:*: " + indexNum1);
+                    Console.WriteLine("testing opertaor:*: " + indexOperator);
+                    Console.WriteLine("testing num2:*: " + indexNum2);
 
-                    //now remove from ARRAY, after converting to LIST
-                    var tempList = rightEquation.ToList();
-                    tempList.RemoveAt(indexNum2);
-                    tempList.RemoveAt(indexOperator);
-                    tempList.RemoveAt(indexNum1);
-
-                    //convert LIST back to ARRAY
-                    string[] tempFinalArray = (string[])tempList.ToArray();
-                    
-                    for (int j = 0; j < rightEquation.Length; j++)
+                    //sets new values for equation
+                    rightEquation.SetValue(equationResult.ToString(), indexNum1);
+                    rightEquation.SetValue("", indexOperator);
+                    rightEquation.SetValue("", indexNum2);
+                    //continue;
+                } 
+                else if (matchSubtraction.Success == true)
+                {
+                    value1 = matchSubtraction.Groups[1].Value;
+                    value2 = matchSubtraction.Groups[2].Value;
+                    equationResult = Convert.ToInt64(value1) - Convert.ToInt64(value2);
+                    if (equationResult < 0) //removes the - sign from the number
                     {
-                        rightEquation[j] = null;
-                    }
-                    for (int k = 0; k < rightEquation.Length; k++)
-                    {
-                        rightEquation[k] = tempFinalArray[k];
+                        equationResult = equationResult * (-1);
                     }
 
-                    foreach (var item in rightEquation)
-                    {
-                        Console.WriteLine("hopefully correct array: " + item);
-                    }
-                    break;
+                    //finds the index of the current MATCH [NUMBER > OPERATOR > NUMBER]                    
+                    int indexOperator = Array.IndexOf(rightEquation, "-");
+                    int indexNum1 = indexOperator - 1;
+                    int indexNum2 = indexOperator + 1;
+
+                    Console.WriteLine("testing num1:-: " + indexNum1);
+                    Console.WriteLine("testing opertaor:-: " + indexOperator);
+                    Console.WriteLine("testing num2:-: " + indexNum2);
+
+                    //sets new values for equation
+                    rightEquation.SetValue("-", indexNum1);
+                    rightEquation.SetValue(equationResult.ToString(), indexOperator);
+                    rightEquation.SetValue("", indexNum2);
+                    //continue;
                 }
                 else if (matchAddition.Success == true)
                 {
-                    
-                }
-                else if (matchSubtraction.Success == true)
-                {
-                    
+                    value1 = matchAddition.Groups[1].Value;
+                    value2 = matchAddition.Groups[2].Value;
+                    equationResult = Convert.ToInt64(value1) + Convert.ToInt64(value2);
+
+                    //finds the index of the current MATCH [NUMBER > OPERATOR > NUMBER]                    
+                    int indexOperator = Array.IndexOf(rightEquation, "+");
+                    int indexNum1 = indexOperator - 1;
+                    int indexNum2 = indexOperator + 1;
+
+                    Console.WriteLine("testing num1:+: " + indexNum1);
+                    Console.WriteLine("testing opertaor:+: " + indexOperator);
+                    Console.WriteLine("testing num2:+: " + indexNum2);
+
+                    //sets new values for equation
+                    rightEquation.SetValue(equationResult.ToString(), indexNum1);
+                    rightEquation.SetValue("", indexOperator);
+                    rightEquation.SetValue("", indexNum2);
+                    //continue;
                 }
             }
-             Console.WriteLine("Result = " + equationResult);
         }
 
-        #region ARRAY/OPERATOR/OPERANT CHECKS
+        
         static void checkArray(string[] array)
         {
             for (int i = 0; i < array.Length; i++)
@@ -215,6 +234,16 @@ namespace calc
             }
             return valueCheck;
         }
-        #endregion
+
+
+        /*static Boolean parseString(string[] args, out Int64 result)
+        {
+            result = 0;
+
+            if (args.Length != 1) return false;
+            {
+                return (Int64.TryParse(args[0], out result) && result > 0);
+            }
+        }*/
     }
 }
