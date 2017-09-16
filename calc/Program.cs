@@ -97,13 +97,16 @@ namespace calc
             }
             #endregion
 
-            rightEquationCalculations(rightEquation, rightOperators);
-
-            for(int o = 0; o < rightEquation.Length; o++)
+            rightEquationCalculations(ref rightEquation, ref rightOperators);
+            
+            Console.WriteLine("----------------------");    //ANSWER TO EQUATION
+            for (int o = 0; o < rightEquation.Length; o++)
             {
                 Console.WriteLine("X = " + rightEquation[o]);
-                //break;
+                break;
             }
+            checkArray(rightEquation);
+            Console.WriteLine("----------------------");
 
             #region ARGS INPUT TEST DATA 
             Console.WriteLine("Left Equation: ");
@@ -113,7 +116,7 @@ namespace calc
             #endregion
         }
 
-        static void rightEquationCalculations(string[] rightEquation, string[] rightOperators)
+        static void rightEquationCalculations(ref string[] rightEquation, ref string[] rightOperators)
         {
             //for (int i = 0; i < rightOperators.Length; i++)
             //if (rightEquation != null)
@@ -145,17 +148,21 @@ namespace calc
                     rightEquation.SetValue(equationResult.ToString(), indexNum1);
                     rightEquation.SetValue("", indexOperator);
                     rightEquation.SetValue("", indexNum2);
-                    //continue;
+
+                    //clear whitespaces                    
+                    clearWhiteSpace(ref rightEquation);
+
+                    continue;
                 } 
                 else if (matchSubtraction.Success == true)
                 {
                     value1 = matchSubtraction.Groups[1].Value;
                     value2 = matchSubtraction.Groups[2].Value;
                     equationResult = Convert.ToInt64(value1) - Convert.ToInt64(value2);
-                    if (equationResult < 0) //removes the - sign from the number
-                    {
-                        equationResult = equationResult * (-1);
-                    }
+                    //if (equationResult < 0) //removes the - sign from the number
+                    //{
+                    //    equationResult = equationResult * (-1);
+                    //}
 
                     //finds the index of the current MATCH [NUMBER > OPERATOR > NUMBER]                    
                     int indexOperator = Array.IndexOf(rightEquation, "-");
@@ -167,10 +174,18 @@ namespace calc
                     Console.WriteLine("testing num2:-: " + indexNum2);
 
                     //sets new values for equation
-                    rightEquation.SetValue("-", indexNum1);
-                    rightEquation.SetValue(equationResult.ToString(), indexOperator);
+                    rightEquation.SetValue(equationResult.ToString(), indexNum1);
+                    rightEquation.SetValue("", indexOperator);
                     rightEquation.SetValue("", indexNum2);
-                    //continue;
+
+                    //rightEquation.SetValue("-", indexNum1);
+                    //rightEquation.SetValue(equationResult.ToString(), indexOperator);
+                    //rightEquation.SetValue("", indexNum2);
+
+                    //clear whitespaces
+                    clearWhiteSpace(ref rightEquation);
+
+                    continue;
                 }
                 else if (matchAddition.Success == true)
                 {
@@ -191,9 +206,13 @@ namespace calc
                     rightEquation.SetValue(equationResult.ToString(), indexNum1);
                     rightEquation.SetValue("", indexOperator);
                     rightEquation.SetValue("", indexNum2);
-                    //continue;
+
+                    //clear whitespaces                    
+                    clearWhiteSpace(ref rightEquation);
+
+                    continue;
                 }
-            }
+            }            
         }
 
         
@@ -234,16 +253,17 @@ namespace calc
             }
             return valueCheck;
         }
-
-
-        /*static Boolean parseString(string[] args, out Int64 result)
+        static void clearWhiteSpace(ref string[] array)
         {
-            result = 0;
-
-            if (args.Length != 1) return false;
+            var temp = new List<string>();
+            foreach (var v in array)
             {
-                return (Int64.TryParse(args[0], out result) && result > 0);
+                if (!string.IsNullOrWhiteSpace(v))
+                {
+                    temp.Add(v);
+                }
             }
-        }*/
+            array = temp.ToArray();
+        }
     }
 }
