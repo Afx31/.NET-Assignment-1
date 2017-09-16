@@ -102,7 +102,7 @@ namespace calc
             Console.WriteLine("----------------------");    //ANSWER TO EQUATION
             for (int o = 0; o < rightEquation.Length; o++)
             {
-                Console.WriteLine("X = " + rightEquation[o]);
+                Console.WriteLine("X : " + rightEquation[o]);
                 break;
             }
             checkArray(rightEquation);
@@ -125,10 +125,34 @@ namespace calc
                 Int64 equationResult = 0;
                 string value1, value2;
                 string tempString = string.Join("", rightEquation);
+                Match matchDivision = Regex.Match(tempString, @"(\d+)\/(\d+)");
                 Match matchMultiplication = Regex.Match(tempString, @"(\d+)\*(\d+)");
                 Match matchAddition = Regex.Match(tempString, @"(\d+)\+(\d+)");
                 Match matchSubtraction = Regex.Match(tempString, @"(\d+)\-(\d+)");
-                
+
+                /*if (matchDivision.Success == true)
+                {
+                    value1 = matchMultiplication.Groups[1].Value;
+                    value2 = matchMultiplication.Groups[2].Value;
+                    equationResult = Convert.ToInt64(value1) / Convert.ToInt64(value2);
+
+                    //finds the index of the current MATCH [NUMBER > OPERATOR > NUMBER]                    
+                    int indexOperator = Array.IndexOf(rightEquation, "/");
+                    int indexNum1 = indexOperator - 1;
+                    int indexNum2 = indexOperator + 1;
+
+                    Console.WriteLine("testing num1:/: " + indexNum1);
+                    Console.WriteLine("testing opertaor:/: " + indexOperator);
+                    Console.WriteLine("testing num2:/: " + indexNum2);
+
+                    //sets new values for equation
+                    rightEquation.SetValue(equationResult.ToString(), indexNum1);
+                    rightEquation.SetValue("", indexOperator);
+                    rightEquation.SetValue("", indexNum2);
+                                      
+                    clearWhiteSpace(ref rightEquation); //clear whitespaces 
+                    continue;
+                }*/
                 if (matchMultiplication.Success == true)
                 {
                     value1 = matchMultiplication.Groups[1].Value;
@@ -148,10 +172,8 @@ namespace calc
                     rightEquation.SetValue(equationResult.ToString(), indexNum1);
                     rightEquation.SetValue("", indexOperator);
                     rightEquation.SetValue("", indexNum2);
-
-                    //clear whitespaces                    
-                    clearWhiteSpace(ref rightEquation);
-
+                                      
+                    clearWhiteSpace(ref rightEquation); //clear whitespaces 
                     continue;
                 } 
                 else if (matchSubtraction.Success == true)
@@ -159,10 +181,10 @@ namespace calc
                     value1 = matchSubtraction.Groups[1].Value;
                     value2 = matchSubtraction.Groups[2].Value;
                     equationResult = Convert.ToInt64(value1) - Convert.ToInt64(value2);
-                    //if (equationResult < 0) //removes the - sign from the number
-                    //{
-                    //    equationResult = equationResult * (-1);
-                    //}
+                    if (equationResult < 0) //removes the - sign from the number
+                    {
+                        equationResult = equationResult * (-1);
+                    }
 
                     //finds the index of the current MATCH [NUMBER > OPERATOR > NUMBER]                    
                     int indexOperator = Array.IndexOf(rightEquation, "-");
@@ -174,17 +196,18 @@ namespace calc
                     Console.WriteLine("testing num2:-: " + indexNum2);
 
                     //sets new values for equation
-                    rightEquation.SetValue(equationResult.ToString(), indexNum1);
+                    /*rightEquation.SetValue(equationResult.ToString(), indexNum1);
                     rightEquation.SetValue("", indexOperator);
+                    rightEquation.SetValue("", indexNum2);*/
+
+                    rightEquation.SetValue("-", indexNum1);
+                    rightEquation.SetValue(equationResult.ToString(), indexOperator);
                     rightEquation.SetValue("", indexNum2);
-
-                    //rightEquation.SetValue("-", indexNum1);
-                    //rightEquation.SetValue(equationResult.ToString(), indexOperator);
-                    //rightEquation.SetValue("", indexNum2);
-
-                    //clear whitespaces
-                    clearWhiteSpace(ref rightEquation);
-
+                    //so this works, just gotta change it so for division the answer
+                    //is the first 2 indexes of the array. but then needa code for
+                    //first variable of equation to be a -  eg: X = - 4 + 5 * 10
+                    
+                    clearWhiteSpace(ref rightEquation);     //clear whitespaces 
                     continue;
                 }
                 else if (matchAddition.Success == true)
@@ -206,10 +229,8 @@ namespace calc
                     rightEquation.SetValue(equationResult.ToString(), indexNum1);
                     rightEquation.SetValue("", indexOperator);
                     rightEquation.SetValue("", indexNum2);
-
-                    //clear whitespaces                    
-                    clearWhiteSpace(ref rightEquation);
-
+                  
+                    clearWhiteSpace(ref rightEquation);     //clear whitespaces 
                     continue;
                 }
             }            
@@ -255,15 +276,15 @@ namespace calc
         }
         static void clearWhiteSpace(ref string[] array)
         {
-            var temp = new List<string>();
+            var tempList = new List<string>();
             foreach (var v in array)
             {
                 if (!string.IsNullOrWhiteSpace(v))
                 {
-                    temp.Add(v);
+                    tempList.Add(v);
                 }
             }
-            array = temp.ToArray();
+            array = tempList.ToArray();
         }
     }
 }
