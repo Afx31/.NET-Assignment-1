@@ -1,0 +1,14 @@
+D:\Desktop\.NET ASSIGNMENT 1\Equ\Equ\bin\Debug\Equ.exe.config
+D:\Desktop\.NET ASSIGNMENT 1\Equ\Equ\bin\Debug\Equ.exe
+D:\Desktop\.NET ASSIGNMENT 1\Equ\Equ\bin\Debug\Equ.pdb
+D:\Desktop\.NET ASSIGNMENT 1\Equ\Equ\obj\Debug\Equ.csprojResolveAssemblyReference.cache
+D:\Desktop\.NET ASSIGNMENT 1\Equ\Equ\obj\Debug\Equ.csproj.CoreCompileInputs.cache
+D:\Desktop\.NET ASSIGNMENT 1\Equ\Equ\obj\Debug\Equ.exe
+D:\Desktop\.NET ASSIGNMENT 1\Equ\Equ\obj\Debug\Equ.pdb
+C:\Users\Jun\Desktop\.NET ASSIGNMENT 1\Equ\Equ\bin\Debug\Equ.exe.config
+C:\Users\Jun\Desktop\.NET ASSIGNMENT 1\Equ\Equ\bin\Debug\Equ.exe
+C:\Users\Jun\Desktop\.NET ASSIGNMENT 1\Equ\Equ\bin\Debug\Equ.pdb
+C:\Users\Jun\Desktop\.NET ASSIGNMENT 1\Equ\Equ\obj\Debug\Equ.csprojResolveAssemblyReference.cache
+C:\Users\Jun\Desktop\.NET ASSIGNMENT 1\Equ\Equ\obj\Debug\Equ.csproj.CoreCompileInputs.cache
+C:\Users\Jun\Desktop\.NET ASSIGNMENT 1\Equ\Equ\obj\Debug\Equ.exe
+C:\Users\Jun\Desktop\.NET ASSIGNMENT 1\Equ\Equ\obj\Debug\Equ.pdb
